@@ -35,7 +35,7 @@
 
     <script>
         async function getDuolingoStats() {
-            let username = "YOUR_USERNAME"; // Change this to your Duolingo username
+            let username = "B2m76knq"; // Change this to your Duolingo username
             let response = await fetch(`https://www.duolingo.com/users/${username}`);
             let data = await response.json();
             let streak = data.streak_extended_day_count || 0;
