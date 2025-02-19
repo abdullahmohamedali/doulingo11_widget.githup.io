@@ -1,55 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duolingo Widget</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #58CC02;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 250px;
-            margin: auto;
-        }
-        img {
-            width: 80px;
-            height: 80px;
-        }
-        .duo-stats {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <img src="https://upload.wikimedia.org/wikipedia/en/e/ed/Duolingo_logo.png" alt="Duolingo">
-    <h2>Your Duolingo Progress</h2>
-    <p class="duo-stats">🔥 Streak: <span id="streak">Loading...</span> days</p>
-    <p class="duo-stats">🏆 XP: <span id="xp">Loading...</span></p>
+<div style="border: 1px solid #ccc; padding: 10px; width: 250px;">
+    <h3>Duolingo Stats</h3>
+    <p>🔥 Streak: <span id="streak">Loading...</span></p>
+    <p>⭐ XP: <span id="xp">Loading...</span></p>
+</div>
 
-    <script>
+<script>
 async function getDuolingoStats() {
-    let username = "B2m76knq"; // Replace with your Duolingo username
+    let username = "B2m76knq"; // Change this to your Duolingo username
     let proxy = "https://api.allorigins.win/get?url=";
     let url = `https://duome.eu/${username}/progress`;
 
     try {
         let response = await fetch(proxy + encodeURIComponent(url));
         let data = await response.json();
-        let text = data.contents; // Extract the HTML content
+        let text = data.contents; // Get HTML content
 
-        // Extract streak using regex
+        // Extract streak from the HTML
         let streakMatch = text.match(/🔥 (\d+) day streak/);
         let streak = streakMatch ? streakMatch[1] : "N/A";
 
         document.getElementById("streak").innerText = streak;
-        document.getElementById("xp").innerText = "XP data not available"; // XP requires manual extraction
+        document.getElementById("xp").innerText = "XP not available"; // XP needs custom parsing
 
     } catch (error) {
         console.error("Failed to fetch Duolingo stats:", error);
@@ -59,9 +30,4 @@ async function getDuolingoStats() {
 }
 
 getDuolingoStats();
-
-
-
-    </script>
-</body>
-</html>
+</script>
