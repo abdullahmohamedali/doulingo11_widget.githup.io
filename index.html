@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duolingo Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #58CC02;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            margin: auto;
+        }
+        img {
+            width: 80px;
+            height: 80px;
+        }
+        .duo-stats {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://upload.wikimedia.org/wikipedia/en/e/ed/Duolingo_logo.png" alt="Duolingo">
+    <h2>Your Duolingo Progress</h2>
+    <p class="duo-stats">🔥 Streak: <span id="streak">Loading...</span> days</p>
+    <p class="duo-stats">🏆 XP: <span id="xp">Loading...</span></p>
+
+    <script>
+        async function getDuolingoStats() {
+            let username = "YOUR_USERNAME"; // Change this to your Duolingo username
+            let response = await fetch(`https://www.duolingo.com/users/${username}`);
+            let data = await response.json();
+            let streak = data.streak_extended_day_count || 0;
+            let xp = data.totalXp || 0;
+
+            document.getElementById("streak").innerText = streak;
+            document.getElementById("xp").innerText = xp;
+        }
+
+        getDuolingoStats();
+    </script>
+</body>
+</html>
