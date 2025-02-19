@@ -34,18 +34,22 @@
     <p class="duo-stats">🏆 XP: <span id="xp">Loading...</span></p>
 
     <script>
-        async function getDuolingoStats() {
-            let username = "B2m76knq"; // Change this to your Duolingo username
-            let response = await fetch(`https://www.duolingo.com/users/${username}`);
-            let data = await response.json();
-            let streak = data.streak_extended_day_count || 0;
-            let xp = data.totalXp || 0;
+async function getDuolingoStats() {
+    let username = "YOUR_USERNAME"; // Replace with your username
+    let url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.duolingo.com/users/' + username)}`;
 
-            document.getElementById("streak").innerText = streak;
-            document.getElementById("xp").innerText = xp;
-        }
+    let response = await fetch(url);
+    let data = await response.json();
+    let parsedData = JSON.parse(data.contents);
 
-        getDuolingoStats();
+    let streak = parsedData.streak_extended_day_count || 0;
+    let xp = parsedData.totalXp || 0;
+
+    document.getElementById("streak").innerText = streak;
+    document.getElementById("xp").innerText = xp;
+}
+
+getDuolingoStats();
     </script>
 </body>
 </html>
