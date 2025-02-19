@@ -1,33 +1,29 @@
-<div style="border: 1px solid #ccc; padding: 10px; width: 250px;">
-    <h3>Duolingo Stats</h3>
-    <p>🔥 Streak: <span id="streak">Loading...</span></p>
-    <p>⭐ XP: <span id="xp">Loading...</span></p>
+<div id="duolingo-widget">
+    <p>Loading...</p>
 </div>
 
 <script>
-async function getDuolingoStats() {
-    let username = "B2m76knq"; // Change this to your Duolingo username
-    let proxy = "https://api.allorigins.win/get?url=";
-    let url = `https://duome.eu/${username}/progress`;
+    async function fetchDuolingoStats(username) {
+        try {
+            let response = await fetch(`https://duome.eu/${username}`);
+            let text = await response.text();
 
-    try {
-        let response = await fetch(proxy + encodeURIComponent(url));
-        let data = await response.json();
-        let text = data.contents; // Get HTML content
+            // Extract streak and leaderboard info
+            let streakMatch = text.match(/<span class="streak-number">(\d+)<\/span>/);
+            let leaderboardMatch = text.match(/<span class="leaguePosition">(\d+)<\/span>/);
 
-        // Extract streak from the HTML
-        let streakMatch = text.match(/🔥 (\d+) day streak/);
-        let streak = streakMatch ? streakMatch[1] : "N/A";
+            let streak = streakMatch ? streakMatch[1] : "N/A";
+            let leaderboard = leaderboardMatch ? leaderboardMatch[1] : "N/A";
 
-        document.getElementById("streak").innerText = streak;
-        document.getElementById("xp").innerText = "XP not available"; // XP needs custom parsing
-
-    } catch (error) {
-        console.error("Failed to fetch Duolingo stats:", error);
-        document.getElementById("streak").innerText = "Error";
-        document.getElementById("xp").innerText = "Error";
+            // Update the widget
+            document.getElementById("duolingo-widget").innerHTML = `
+                <p>🔥 Streak: ${streak} days</p>
+                <p>🏆 Leaderboard Position: ${leaderboard}</p>
+            `;
+        } catch (error) {
+            document.getElementById("duolingo-widget").innerHTML = "<p>❌ Failed to load Duolingo stats.</p>";
+        }
     }
-}
 
-getDuolingoStats();
+    fetchDuolingoStats("YOUR_USERNAME"); // Replace with your Duolingo username
 </script>
