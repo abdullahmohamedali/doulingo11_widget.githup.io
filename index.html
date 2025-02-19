@@ -35,21 +35,28 @@
 
     <script>
 async function getDuolingoStats() {
-    let username = "YOUR_USERNAME"; // Replace with your username
-    let url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.duolingo.com/users/' + username)}`;
+    let username = "YOUR_USERNAME"; // Replace with your Duolingo username
+    let url = `https://duome.eu/${username}/progress`;
 
-    let response = await fetch(url);
-    let data = await response.json();
-    let parsedData = JSON.parse(data.contents);
+    try {
+        let response = await fetch(url);
+        let text = await response.text();
 
-    let streak = parsedData.streak_extended_day_count || 0;
-    let xp = parsedData.totalXp || 0;
+        // Extract streak from the page using regex (since it's HTML)
+        let streakMatch = text.match(/🔥 (\d+) day streak/);
+        let streak = streakMatch ? streakMatch[1] : "N/A";
 
-    document.getElementById("streak").innerText = streak;
-    document.getElementById("xp").innerText = xp;
+        document.getElementById("streak").innerText = streak;
+        document.getElementById("xp").innerText = "XP data not available";
+    } catch (error) {
+        console.error("Failed to fetch Duolingo stats:", error);
+        document.getElementById("streak").innerText = "Error";
+        document.getElementById("xp").innerText = "Error";
+    }
 }
 
 getDuolingoStats();
+
     </script>
 </body>
 </html>
